@@ -5,6 +5,7 @@ import { IConfigService } from "./config/config.interface";
 import LocalSession from "telegraf-session-local";
 import { StartCommand } from "./commands/start.command";
 import { ConfigService } from "./config/congif.service";
+import { AppDataSource } from "./data/data.source";
 
 
 class Bot {
@@ -16,6 +17,12 @@ class Bot {
         this.bot.use(
             (new LocalSession({database: 'session.json'})).middleware()
         );
+        AppDataSource.initialize()
+            .then(() => {
+                
+            })
+            .catch((error) => console.log(error))
+        
     }
 
     init() {
@@ -32,3 +39,21 @@ class Bot {
 
 const bot = new Bot(new ConfigService());
 bot.init();
+
+
+// Database Configuration
+// To set up the database connection, create an ormconfig.json file in the root directory of your project. Here's an example configuration:
+
+// json
+// Copy code
+// {
+//   "type": "mysql",
+//   "host": "localhost",
+//   "port": 3306,
+//   "username": "your_username",
+//   "password": "your_password",
+//   "database": "your_database_name",
+//   "entities": ["src/entities/*.ts"],
+//   "migrations": ["src/migrations/*.ts"]
+// }
+// Replace the values for your_username, your_password, and your_database_name with the appropriate parameters for your MySQL database. You can also configure the paths for entities (entities) and migrations (migrations) based on your project's structure.
