@@ -8,6 +8,9 @@ import { ConfigService } from "./config/congif.service";
 import { AppDataSource } from "./data/data.source";
 import { UserEntity } from "./data/user.entity";
 import { UserService } from "./data/user.service";
+import { ToDoAddCommand } from "./commands/addToDo.command";
+import { ToDoEntity } from "./data/todo.entity";
+import { ToDoService } from "./data/todo.service";
 
 
 class Bot {
@@ -19,21 +22,18 @@ class Bot {
         this.bot.use(
             (new LocalSession({database: 'session.json'})).middleware()
         );
-        // AppDataSource.initialize()
-        //     .then(() => {
-        //         const repository = AppDataSource.getRepository(UserEntity)
-        //         const userService: UserService = new UserService(repository)
-        //     })
-        //     .catch((error) => console.log(error))
         
     }
 
     async init() {
         await AppDataSource.initialize();
 
-        const repository = AppDataSource.getRepository(UserEntity);
-        const userService = new UserService(repository);
-        this.commands = [new StartCommand(this.bot, userService)];
+        const userRepository = AppDataSource.getRepository(UserEntity);
+        const userService = new UserService(userRepository);
+
+        const todoRepository = AppDataSource.getRepository(ToDoEntity);
+        const todoService = new ToDoService(todoRepository);
+        this.commands = [new StartCommand(this.bot, userService), new ToDoAddCommand(this.bot, todoService, userService)];
 
         for(const command of this.commands) {
             command.handle();

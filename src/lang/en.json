@@ -2,7 +2,8 @@
     "message": {
         "start": "Hi,",
         "add_todo" : "Write the name of the case:",
-        "save_todo" : "Case saved!"
+        "save_todo" : "Case saved!",
+        "error_save" : "Failed to save the case"
     },
     "keyboards" : {
         "start" : ["Add case", "Delete case", "Edit case", "View cases"],

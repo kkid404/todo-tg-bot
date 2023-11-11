@@ -7,3 +7,8 @@ export function start(userLanguage: string) {
     const messages: Lang = userLanguage === "ru" ? ruMessages : enMessages;
     return Markup.keyboard(messages.keyboards.start, { columns: 2 }).resize(true).oneTime(true);
 }
+
+export function back(userLanguage: string) {
+    const messages: Lang = userLanguage === "ru" ? ruMessages : enMessages;
+    return Markup.keyboard(messages.keyboards.back).resize(true).oneTime(true);
+}
